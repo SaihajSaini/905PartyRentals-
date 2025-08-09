@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>905PartyRentals</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; background: #f8f8f8; color: #333; }
+    header { background: #ff6b6b; color: white; padding: 1rem; text-align: center; }
+    nav a { color: white; margin: 0 10px; text-decoration: none; }
+    main { padding: 20px; max-width: 900px; margin: auto; }
+    .service { background: white; padding: 15px; margin: 15px 0; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    .service h2 { margin-top: 0; }
+    form { background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    input, select, button { padding: 8px; margin: 8px 0; width: 100%; }
+    button { background: #ff6b6b; color: white; border: none; cursor: pointer; }
+    button:hover { background: #ff5252; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>905PartyRentals</h1>
+  <nav>
+    <a href="#services">Services</a>
+    <a href="#booking">Book Now</a>
+  </nav>
+</header>
+
+<main>
+  <section id="services">
+    <h2>Our Rentals</h2>
+    <div class="service">
+      <h3>Bouncy Castle</h3>
+      <p>Price: $130</p>
+    </div>
+    <div class="service">
+      <h3>Ball Pit (Includes Ball Pit, Mat, Slides)</h3>
+      <p>Price: $150</p>
+    </div>
+    <div class="service">
+      <h3>Popcorn Machine</h3>
+      <p>Price: $60 — Includes kernels, salt & butter (pre-packaged) + 30 popcorn bags (30 servings)</p>
+    </div>
+    <div class="service">
+      <h3>Cotton Candy Machine</h3>
+      <p>Price: $60 — Includes choice of blue or pink floss (sugar) + 30 paper cones (30 servings)</p>
+    </div>
+    <div class="service">
+      <h3>Delivery/Pick-up</h3>
+      <p>Price: $50</p>
+    </div>
+  </section>
+
+  <section id="booking">
+    <h2>Book Your Party</h2>
+    <form id="bookingForm">
+      <label>Name:</label>
+      <input type="text" name="name" required />
+      <label>Email:</label>
+      <input type="email" name="email" required />
+      <label>Phone:</label>
+      <input type="tel" name="phone" required />
+      <label>Choose Items:</label>
+      <select name="items" multiple required>
+        <option value="Bouncy Castle">Bouncy Castle - $130</option>
+        <option value="Ball Pit">Ball Pit - $150</option>
+        <option value="Popcorn Machine">Popcorn Machine - $60</option>
+        <option value="Cotton Candy Machine">Cotton Candy Machine - $60</option>
+        <option value="Delivery">Delivery/Pick-up - $50</option>
+      </select>
+      <label>Event Date:</label>
+<input type="date" name="eventDate" required />
+      <label>Additional Notes:</label>
+      <textarea name="notes"></textarea>
+      <button type="submit">Submit Booking</button>
+    </form>
+    <p id="resultMsg"></p>
+  </section>
+</main>
+
+<script>
+document.getElementById('bookingForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const form = e.target;
+  const data = {
+    name: form.name.value,
+    email: form.email.value,
+    phone: form.phone.value,
+    items: Array.from(form.items.selectedOptions).map(opt => opt.value),
+    date: form.date.value,
+    notes: form.notes.value
+  };
+  
+  const res = await fetch('/api/book', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  });
+  const result = await res.json();
+  document.getElementById('resultMsg').innerText = result.message || 'Booking submitted!';
+  form.reset();
+});
+</script>
+
+</body>
+</html>

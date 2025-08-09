@@ -1,18 +1,25 @@
 {
-  "name": "905partyrentals",
-  "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {
-    "start": "node public/server.js",
-  "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
-  "dependencies": {
-    "dotenv": "^17.2.1",
-    "express": "^5.1.0",
-    "nodemailer": "^7.0.5"
-  }
+    "name": "905partyrentals",
+    "version": "1.0.0",
+    "main": "server.js",
+    "scripts": {
+        "start": "node server.js"
+    },
+    "dependencies": {
+        "dotenv": "^16.6.1",
+        "express": "^4.21.2",
+        "nodemailer": "^6.10.1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/SaihajSainiE/905partyrentals.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/SaihajSainiE/905partyrentals/issues"
+    },
+    "homepage": "https://github.com/SaihajSainiE/905partyrentals#readme",
+    "description": ""
 }
