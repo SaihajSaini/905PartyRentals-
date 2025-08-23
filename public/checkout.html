@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Checkout — 905PartyRentals</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+<header>
+  <div class="container nav">
+    <a class="brand" href="/"><span>905PartyRentals</span></a>
+    <nav class="menu">
+      <a href="/services.html">Services</a>
+      <a href="/checkout.html">Cart/Checkout</a>
+      <a href="/contact.html">Contact</a>
+      <a href="/socials.html">Socials</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  <h1>Cart & Checkout</h1>
+
+  <div id="cartArea" class="card" style="padding:1rem">
+    <table class="table" id="cartTable"></table>
+    <div class="total" id="totals"></div>
+    <label class="small" style="display:block;margin-top:.6rem">
+      <input type="checkbox" id="wantDelivery"> Add Delivery/Pick-up (+$50)
+    </label>
+  </div>
+
+  <h2 style="margin-top:1.4rem">Your Details</h2>
+  <form id="orderForm" class="card" style="padding:1rem;display:grid;gap:.8rem">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.8rem">
+      <div><label>Name</label><input name="name" required></div>
+      <div><label>Email</label><input name="email" type="email" required></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.8rem">
+      <div><label>Phone</label><input name="phone" required></div>
+      <div><label>Event date</label><input name="eventDate" type="date" required></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.8rem">
+      <div><label>Start time</label><input name="startTime" type="time"></div>
+      <div><label>End time</label><input name="endTime" type="time"></div>
+      <div><label>City</label><input name="city"></div>
+    </div>
+    <div><label>Address (if delivery)</label><input name="address" placeholder="Street, postal code"></div>
+    <div><label>Notes</label><textarea name="notes" rows="3"></textarea></div>
+    <button class="btn btn-primary" type="submit">Place booking</button>
+    <div id="msg" class="small"></div>
+  </form>
+</main>
+
+<footer><div class="container">© <span id="yr"></span> 905PartyRentals</div></footer>
+
+<!-- Inline cart logic (no imports) -->
+<script>
+  // --- cart utils (was cart.js) ---
+  const CART_KEY = '905_cart';
+  const DELIVERY_FEE = 50;
+  const getCart = () => { try { return JSON.parse(localStorage.getItem(CART_KEY)) || []; } catch { return []; } };
+  const saveCart = (items) => localStorage.setItem(CART_KEY, JSON.stringify(items));
+  const updateQty = (id, qty) => saveCart(getCart().map(i => i.id===id ? {...i, qty: Math.max(1, qty)} : i));
+  const removeFromCart = (id) => saveCart(getCart().filter(i => i.id !== id));
+  const clearCart = () => saveCart([]);
+  const subtotal = (items) => items.reduce((s,i)=> s + i.price*i.qty, 0);
+  const total = (items, wantDelivery) => subtotal(items) + (wantDelivery ? DELIVERY_FEE : 0);
+
+  // --- page wiring ---
+  document.getElementById('yr').textContent = new Date().getFullYear();
+  const table = document.getElementById('cartTable');
+  const totals = document.getElementById('totals');
+  const deliveryBox = document.getElementById('wantDelivery');
+
+  function render(){
+    const items = getCart();
+    if(items.length===0){
+      table.innerHTML = '<tr><td>Your cart is empty. <a href="/services.html">Add rentals</a>.</td></tr>';
+      totals.textContent = '';
+      return;
+    }
+    table.innerHTML = `
+      <tr><th>Item</th><th>Price</th><th>Qty</th><th>Line</th><th></th></tr>
+      ${items.map(i=>`
+        <tr>
+          <td>${i.name}</td>
+          <td>$${i.price}</td>
+          <td>
+            <span class="qty">
+              <button data-minus="${i.id}" type="button">−</button>
+              <input value="${i.qty}" readonly />
+              <button data-plus="${i.id}" type="button">+</button>
+            </span>
+          </td>
+          <td>$${i.price*i.qty}</td>
+          <td><button class="btn btn-outline" data-remove="${i.id}" type="button">Remove</button></td>
+        </tr>
+      `).join('')}
+    `;
+    const wantDelivery = deliveryBox.checked;
+    const sub = subtotal(items);
+    const tot = total(items, wantDelivery);
+    totals.innerHTML = `
+      <div>Subtotal: $${sub}</div>
+      <div>Delivery: $${wantDelivery?DELIVERY_FEE:0}</div>
+      <div>Total: $${tot}</div>
+    `;
+  }
+
+  document.addEventListener('click', (e)=>{
+    const minus = e.target.dataset.minus, plus = e.target.dataset.plus, rem = e.target.dataset.remove;
+    if(minus){ const items = getCart(); const it = items.find(x=>x.id===minus); updateQty(minus, (it.qty||1)-1); render(); }
+    if(plus){ const items = getCart(); const it = items.find(x=>x.id===plus); updateQty(plus, (it.qty||1)+1); render(); }
+    if(rem){ removeFromCart(rem); render(); }
+  });
+  deliveryBox.addEventListener('change', render);
+  render();
+
+  // Submit to backend
+  const form = document.getElementById('orderForm');
+  const msg = document.getElementById('msg');
+  form.addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    const items = getCart();
+    if(items.length===0){ msg.textContent='Add items first.'; return; }
+    const data = Object.fromEntries(new FormData(form).entries());
+    const payload = {
+      ...data,
+      items: items.map(i=>i.name),
+      wantDelivery: document.getElementById('wantDelivery').checked
+    };
+    msg.textContent='Submitting...';
+    try{
+      const res = await fetch('/api/book', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+      const out = await res.json();
+      if(!res.ok) throw new Error(out.error || 'Error');
+      msg.innerHTML = `<span class="badge" style="background:rgba(52,211,153,.2);color:#34d399">Booking received! Est. total $${out.total}</span>`;
+      clearCart();
+      render();
+    }catch(err){
+      msg.innerHTML = `<span style="color:#f87171">${err.message}</span>`;
+    }
+  });
+</script>
+</body>
+</html>
