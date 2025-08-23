@@ -1,107 +1,141 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>905PartyRentals</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Welcome — 905PartyRentals</title>
+  <link rel="stylesheet" href="/styles.css" />
   <style>
-    body { font-family: Arial, sans-serif; margin: 0; background: #f8f8f8; color: #333; }
-    header { background: #ff6b6b; color: white; padding: 1rem; text-align: center; }
-    nav a { color: white; margin: 0 10px; text-decoration: none; }
-    main { padding: 20px; max-width: 900px; margin: auto; }
-    .service { background: white; padding: 15px; margin: 15px 0; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-    .service h2 { margin-top: 0; }
-    form { background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-    input, select, button { padding: 8px; margin: 8px 0; width: 100%; }
-    button { background: #ff6b6b; color: white; border: none; cursor: pointer; }
-    button:hover { background: #ff5252; }
+    /* Page-specific tweaks on top of styles.css */
+    .welcome-hero{
+      position:relative; overflow:hidden; border-radius:22px;
+      background: radial-gradient(1200px 600px at 10% -20%, rgba(34,211,238,.20), transparent),
+                  radial-gradient(900px 500px at 90% 120%, rgba(244,114,182,.18), transparent),
+                  linear-gradient(180deg, #0f172a, #0b1224);
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow: var(--shadow);
+      padding: clamp(1.2rem, 3vw, 2rem);
+    }
+    .welcome-inner{
+      display:grid; gap:1.2rem; align-items:center;
+      grid-template-columns: 1.05fr .95fr;
+    }
+    .hero-badge{display:inline-flex; gap:.5rem; align-items:center}
+    .hero-badge .dot{width:10px;height:10px;border-radius:999px;background:var(--good)}
+    .hero-title{font-size:clamp(2rem,5vw,3.2rem);line-height:1.05;margin:.2rem 0}
+    .cta-row{display:flex; gap:.8rem; flex-wrap:wrap}
+    .info-pills{display:flex; gap:.5rem; flex-wrap:wrap; margin-top:.6rem}
+    .pill{border:1px solid rgba(255,255,255,.14); border-radius:999px; padding:.35rem .6rem; color:var(--muted)}
+    .hero-photo{aspect-ratio: 4/3; border-radius:18px; overflow:hidden; border:1px solid rgba(255,255,255,.08)}
+    .hero-photo img{width:100%; height:100%; object-fit:cover; display:block}
+
+    .quick-grid{display:grid; gap:1rem; grid-template-columns:repeat(4,1fr); margin-top:1.2rem}
+    .quick-card{background:var(--card); border:1px solid rgba(255,255,255,.06); border-radius:16px; padding:1rem; text-align:center}
+    .quick-price{font-weight:900; margin-top:.25rem}
+
+    .gallery{margin-top:1.6rem}
+    .gallery-grid{display:grid; gap:.6rem; grid-template-columns:repeat(6,1fr)}
+    .gallery-grid img{width:100%; height:120px; object-fit:cover; border-radius:12px; border:1px solid rgba(255,255,255,.08)}
+
+    @media (max-width: 980px){
+      .welcome-inner{grid-template-columns:1fr}
+      .quick-grid{grid-template-columns:1fr 1fr}
+      .gallery-grid{grid-template-columns:repeat(3,1fr)}
+    }
   </style>
 </head>
 <body>
-
 <header>
-  <h1>905PartyRentals</h1>
-  <nav>
-    <a href="#services">Services</a>
-    <a href="#booking">Book Now</a>
-  </nav>
+  <div class="container nav">
+    <a class="brand" href="/"><span>905PartyRentals</span></a>
+    <nav class="menu">
+      <a href="/services.html">Services</a>
+      <a href="/checkout.html">Cart/Checkout</a>
+      <a href="/contact.html">Contact</a>
+      <a href="/socials.html">Socials</a>
+    </nav>
+  </div>
 </header>
 
-<main>
-  <section id="services">
-    <h2>Our Rentals</h2>
-    <div class="service">
-      <h3>Bouncy Castle</h3>
-      <p>Price: $130</p>
-    </div>
-    <div class="service">
-      <h3>Ball Pit (Includes Ball Pit, Mat, Slides)</h3>
-      <p>Price: $150</p>
-    </div>
-    <div class="service">
-      <h3>Popcorn Machine</h3>
-      <p>Price: $60 — Includes kernels, salt & butter (pre-packaged) + 30 popcorn bags (30 servings)</p>
-    </div>
-    <div class="service">
-      <h3>Cotton Candy Machine</h3>
-      <p>Price: $60 — Includes choice of blue or pink floss (sugar) + 30 paper cones (30 servings)</p>
-    </div>
-    <div class="service">
-      <h3>Delivery/Pick-up</h3>
-      <p>Price: $50</p>
+<main class="container" style="padding-top:1.2rem">
+  <!-- Hero -->
+  <section class="welcome-hero">
+    <div class="welcome-inner">
+      <div>
+        <div class="hero-badge"><span class="dot"></span><span class="badge">Welcome to 905PartyRentals</span></div>
+        <h1 class="hero-title">Make your party bright, safe, and unforgettable 🎉</h1>
+        <p class="small">Bouncy castles, ball pit, popcorn & cotton candy machines across the 905. Friendly setup, sanitized equipment, simple pricing.</p>
+        <div class="cta-row" style="margin-top:.8rem">
+          <a class="btn btn-primary" href="/services.html">Explore Services</a>
+          <a class="btn btn-outline" href="/checkout.html">View Cart / Checkout</a>
+        </div>
+        <div class="info-pills">
+          <span class="pill">On-time delivery (+$50 optional)</span>
+          <span class="pill">4 castles available</span>
+          <span class="pill">30-serving concessions</span>
+          <span class="pill">Flexible 4–8 hr windows</span>
+        </div>
+      </div>
+      <div class="hero-photo">
+        <img src="/img/hero-bouncy.jpg" alt="Colorful bouncy castle">
+      </div>
     </div>
   </section>
 
-  <section id="booking">
-    <h2>Book Your Party</h2>
-    <form id="bookingForm">
-      <label>Name:</label>
-      <input type="text" name="name" required />
-      <label>Email:</label>
-      <input type="email" name="email" required />
-      <label>Phone:</label>
-      <input type="tel" name="phone" required />
-      <label>Choose Items:</label>
-      <select name="items" multiple required>
-        <option value="Bouncy Castle">Bouncy Castle - $130</option>
-        <option value="Ball Pit">Ball Pit - $150</option>
-        <option value="Popcorn Machine">Popcorn Machine - $60</option>
-        <option value="Cotton Candy Machine">Cotton Candy Machine - $60</option>
-        <option value="Delivery">Delivery/Pick-up - $50</option>
-      </select>
-      <label>Event Date:</label>
-<input type="date" name="eventDate" required />
-      <label>Additional Notes:</label>
-      <textarea name="notes"></textarea>
-      <button type="submit">Submit Booking</button>
-    </form>
-    <p id="resultMsg"></p>
+  <!-- Quick price cards -->
+  <section>
+    <div class="quick-grid">
+      <div class="quick-card">
+        <div class="tag">Bouncy Castle</div>
+        <div>Green/Blue</div>
+        <div class="quick-price">$120/day</div>
+      </div>
+      <div class="quick-card">
+        <div class="tag">Bouncy Castle</div>
+        <div>Kids</div>
+        <div class="quick-price">$100/day</div>
+      </div>
+      <div class="quick-card">
+        <div class="tag">Bouncy Castle</div>
+        <div>Big Slide</div>
+        <div class="quick-price">$130/day</div>
+      </div>
+      <div class="quick-card">
+        <div class="tag">Bouncy Castle</div>
+        <div>Obstacle</div>
+        <div class="quick-price">$100/day</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mini gallery (your photos) -->
+  <section class="gallery">
+    <h2>Recent Setups</h2>
+    <div class="gallery-grid">
+      <img src="/img/castle-green-blue-1.jpg" alt="">
+      <img src="/img/castle-green-blue-2.jpg" alt="">
+      <img src="/img/castle-green-blue-3.jpg" alt="">
+      <img src="/img/big-slide-1.jpg" alt="">
+      <img src="/img/big-slide-2.jpg" alt="">
+      <img src="/img/big-slide-3.jpg" alt="">
+    </div>
+    <p class="small" style="margin-top:.6rem">See more on <a href="/socials.html">Instagram</a> or jump straight to <a href="/services.html">Services</a>.</p>
+  </section>
+
+  <!-- Safety / trust blurb -->
+  <section style="margin-top:1.2rem">
+    <div class="notice">
+      <b>Safety first:</b> every unit is cleaned and sanitized before/after each rental. We stake/weight and test blowers on setup, and provide simple safety rules.
+    </div>
   </section>
 </main>
 
-<script>
-document.getElementById('bookingForm').addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const form = e.target;
-  const data = {
-    name: form.name.value,
-    email: form.email.value,
-    phone: form.phone.value,
-    items: Array.from(form.items.selectedOptions).map(opt => opt.value),
-    date: form.date.value,
-    notes: form.notes.value
-  };
-  
-  const res = await fetch('/api/book', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data)
-  });
-  const result = await res.json();
-  document.getElementById('resultMsg').innerText = result.message || 'Booking submitted!';
-  form.reset();
-});
-</script>
+<footer>
+  <div class="container">© <span id="yr"></span> 905PartyRentals — Serving the 905</div>
+</footer>
 
+<script>
+  document.getElementById('yr').textContent = new Date().getFullYear();
+</script>
 </body>
 </html>
