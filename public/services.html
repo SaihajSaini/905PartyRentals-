@@ -7,17 +7,25 @@
   <link rel="stylesheet" href="/styles.css" />
 </head>
 <body>
-<header>
-  <div class="container nav">
-    <a class="brand" href="/"><span>905PartyRentals</span></a>
-    <nav class="menu">
-      <a href="/services.html">Services</a>
-      <a href="/checkout.html">Cart/Checkout</a>
-      <a href="/contact.html">Contact</a>
-      <a href="/socials.html">Socials</a>
-    </nav>
-  </div>
-</header>
+  <header>
+    <div class="container nav">
+      <a class="brand" href="/"><span>905PartyRentals</span></a>
+  
+      <nav class="menu">
+        <a href="/services.html">Services</a>
+        <a href="/contact.html">Contact</a>
+        <a href="/socials.html">Socials</a>
+  
+        <!-- This spacer pushes the cart to the far right -->
+        <span class="spacer"></span>
+  
+        <!-- Cart all the way at the end -->
+        <a class="btn btn-primary cart-btn" href="/checkout.html">
+          Cart (<span id="cartCount">0</span>)
+        </a>
+      </nav>
+    </div>
+  </header>
 
 <main class="container">
   <h1>Services</h1>

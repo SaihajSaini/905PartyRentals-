@@ -1,51 +1,44 @@
 <!doctype html>
-<html lang ="en">
-    <head> 
-        <meta charset=" utf-8" />
-        <meta name = "viewport" content="width=device-width, initial-scale=1" />
-        <title>Socials — 905PartyRentals</title>
-        <link rel="stylesheet" href="/styles.css" />
-    </head>
-    <body>
-        <header>
-          <div class="container nav">
-            <a class="brand" href="/"><span>905PartyRentals</span></a>
-            <nav class="menu">
-              <a href="/services.html">Services</a>
-              <a href="/checkout.html">Cart/Checkout</a>
-              <a href="/contact.html">Contact</a>
-              <a href="/socials.html">Socials</a>
-            </nav>
-          </div>
-        </header>
-        
-        <main class="container">
-          <h1>Socials</h1>
-          <div class="card" style="padding:1rem">
-            <p>Follow us on Instagram for recent setups and deals:</p>
-            <p><a class="btn btn-primary" href="https://www.instagram.com/905partyrentals" target="_blank" rel="noopener">Open Instagram</a></p>
-          </div>
-        </main>
-        
-        <footer><div class="container">© <span id="yr"></span> 905PartyRentals</div></footer>
-        <script>document.getElementById('yr').textContent=new Date().getFullYear()</script>
-        </body>
-        </html>
-        <header>
-            <div class="container nav">
-              <a class="brand" href="/"><span>905PartyRentals</span></a>
-          
-              <nav class="menu">
-                <a href="/services.html">Services</a>
-                <a href="/contact.html">Contact</a>
-                <a href="/socials.html">Socials</a>
-          
-                <!-- This spacer pushes the cart to the far right -->
-                <span class="spacer"></span>
-          
-                <!-- Cart all the way at the end -->
-                <a class="btn btn-primary cart-btn" href="/checkout.html">Cart / Checkout</a>
-              </nav>
-            </div>
-          </header>
-          
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Socials — 905PartyRentals</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+<header>
+  <div class="container nav">
+    <a class="brand" href="/"><span>905PartyRentals</span></a>
+    <nav class="menu">
+      <a href="/services.html">Services</a>
+      <a href="/contact.html">Contact</a>
+      <a href="/socials.html">Socials</a>
+      <span class="spacer"></span>
+      <a class="btn btn-primary cart-btn" href="/checkout.html">Cart (<span id="cartCount">0</span>)</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  <h1>Socials</h1>
+  <p>Follow us on Instagram: 
+    <a class="btn btn-primary" href="https://www.instagram.com/905partyrentals" target="_blank" rel="noopener">Open Instagram</a>
+  </p>
+</main>
+
+<footer><div class="container">© <span id="yr"></span> 905PartyRentals</div></footer>
+
+<script>
+  document.getElementById('yr').textContent=new Date().getFullYear();
+  (function(){
+    const CART_KEY='905_cart'; const el=document.getElementById('cartCount');
+    function countItems(){try{const i=JSON.parse(localStorage.getItem(CART_KEY))||[];return i.reduce((n,x)=>n+(x.qty||1),0);}catch{return 0;}}
+    function render(){ if(el) el.textContent = countItems(); }
+    render(); window.addEventListener('focus',render);
+    document.addEventListener('visibilitychange',()=>{if(!document.hidden) render();});
+    window.addEventListener('cart:updated',render);
+  })();
+</script>
+</body>
+</html>
